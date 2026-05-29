@@ -209,7 +209,8 @@
                 <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'text-primary font-medium' : 'text-dark' }} hover:text-primary">Home</a>
                 <a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'text-primary font-medium' : 'text-dark' }} hover:text-primary">About</a>
                 <a href="{{ route('services') }}" class="nav-link {{ request()->routeIs('services') ? 'text-primary font-medium' : 'text-dark' }} hover:text-primary">Services</a>
-                <a href="{{ route('books') }}" class="nav-link {{ request()->routeIs('books') ? 'text-primary font-medium' : 'text-dark' }} hover:text-primary">Books</a>
+                <a href="{{ route('books') }}" class="nav-link {{ request()->routeIs('books') ? 'text-primary font-medium' : 'text-dark' }} hover:text-primary">My Publications</a>
+                <a href="{{ route('blog.index') }}" class="nav-link {{ request()->routeIs('blog*') ? 'text-primary font-medium' : 'text-dark' }} hover:text-primary">Blog</a>
                 <a href="{{ route('testimonials') }}" class="nav-link {{ request()->routeIs('testimonials') ? 'text-primary font-medium' : 'text-dark' }} hover:text-primary">Testimonials</a>
                 <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'text-primary font-medium' : 'text-dark' }} hover:text-primary">Contact</a>
 
@@ -268,7 +269,8 @@
             <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'text-primary font-medium' : 'text-gray-600' }}">Home</a>
             <a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'text-primary font-medium' : 'text-gray-600' }}">About</a>
             <a href="{{ route('services') }}" class="nav-link {{ request()->routeIs('services') ? 'text-primary font-medium' : 'text-gray-600' }}">Services</a>
-            <a href="{{ route('books') }}" class="nav-link {{ request()->routeIs('books') ? 'text-primary font-medium' : 'text-gray-600' }}">Books</a>
+            <a href="{{ route('books') }}" class="nav-link {{ request()->routeIs('books') ? 'text-primary font-medium' : 'text-gray-600' }}">My Publications</a>
+            <a href="{{ route('blog.index') }}" class="nav-link {{ request()->routeIs('blog*') ? 'text-primary font-medium' : 'text-gray-600' }}">Blog</a>
             <a href="{{ route('testimonials') }}" class="nav-link {{ request()->routeIs('testimonials') ? 'text-primary font-medium' : 'text-gray-600' }}">Testimonials</a>
             <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'text-primary font-medium' : 'text-gray-600' }}">Contact</a>
             <a href="javascript:void(0)" onclick="openBookModal()" class="bg-primary text-white px-4 py-2 rounded-full block text-center mt-2 font-semibold text-sm">Book Session</a>
@@ -325,6 +327,7 @@
                         <li><a href="{{ route('home') }}" class="text-gray-400 hover:text-white transition">Home</a></li>
                         <li><a href="{{ route('about') }}" class="text-gray-400 hover:text-white transition">About</a></li>
                         <li><a href="{{ route('services') }}" class="text-gray-400 hover:text-white transition">Services</a></li>
+                        <li><a href="{{ route('blog.index') }}" class="text-gray-400 hover:text-white transition">Blog</a></li>
                         <li><a href="{{ route('testimonials') }}" class="text-gray-400 hover:text-white transition">Testimonials</a></li>
                         <li><a href="{{ route('contact') }}" class="text-gray-400 hover:text-white transition">Contact</a></li>
                     </ul>
@@ -894,10 +897,13 @@
                 <i class="fas fa-shopping-bag text-3xl text-primary"></i>
             </div>
             <h2 class="text-xl font-bold text-dark mb-2">Your cart is empty</h2>
-            <p class="text-sm text-gray-500 mb-8">Looks like you haven't added anything yet. Explore our collection and find something you love.</p>
+            <p class="text-sm text-gray-500 mb-8">Your cart is currently empty. Browse our books or book a session to get started.</p>
             <div class="flex flex-col gap-3">
                 <a href="{{ route('books') }}" class="bg-primary hover:bg-[#6a1b9a] text-white px-6 py-3 rounded-full font-semibold transition-all shadow-lg inline-flex items-center justify-center gap-2">
                     <i class="fas fa-book"></i> Browse Books
+                </a>
+                <a href="javascript:void(0)" onclick="document.getElementById('emptyCartModal').classList.add('hidden'); openBookModal()" class="bg-secondary hover:bg-yellow-400 text-dark px-6 py-3 rounded-full font-semibold transition-all shadow-md inline-flex items-center justify-center gap-2">
+                    <i class="fas fa-calendar-check"></i> Book a Session
                 </a>
                 <button onclick="document.getElementById('emptyCartModal').classList.add('hidden')" class="text-sm font-medium text-gray-500 hover:text-gray-700 transition">
                     <i class="fas fa-arrow-left mr-1"></i> Go Back
@@ -1106,7 +1112,10 @@
     }
 
     @if(session('success'))
-        document.addEventListener('DOMContentLoaded', () => showToast('{{ session('success') }}', 'success'));
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('successModalMessage').textContent = '{{ session('success') }}';
+            document.getElementById('successModal').classList.remove('hidden');
+        });
     @endif
     @if(session('error'))
         document.addEventListener('DOMContentLoaded', () => showToast('{{ session('error') }}', 'error'));
@@ -1120,5 +1129,19 @@
     </script>
 
     @stack('scripts')
+
+    <!-- Success Modal (for session flash messages) -->
+    <div id="successModal" class="fixed inset-0 z-[9999] bg-black bg-opacity-60 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-8 text-center transform transition-all duration-300">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check text-2xl text-green-600"></i>
+            </div>
+            <h3 class="text-lg font-bold text-dark mb-2">Success</h3>
+            <p id="successModalMessage" class="text-sm text-gray-600">Operation completed successfully.</p>
+            <button onclick="document.getElementById('successModal').classList.add('hidden')" class="mt-6 bg-primary hover:bg-[#6a1b9a] text-white px-8 py-2.5 rounded-lg font-semibold text-sm transition shadow-md">
+                Done
+            </button>
+        </div>
+    </div>
 </body>
 </html>

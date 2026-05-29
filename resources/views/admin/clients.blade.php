@@ -36,7 +36,7 @@
                             <td class="text-gray-500 text-sm">{{ $c->phone }}</td>
                             <td><span class="badge bg-purple-50 text-[#842988] border-purple-200 font-medium">{{ $c->total_appointments }} session(s)</span></td>
                             <td class="text-gray-500 text-sm">{{ date('M d, Y', strtotime($c->last_appointment_date)) }}</td>
-                            <td class="text-right"><a href="{{ route('admin.client.details', urlencode($c->email)) }}" class="btn btn-ghost btn-xs"><i class="fas fa-folder-open"></i> Profile</a></td>
+                            <td class="text-right"><a href="{{ route('admin.client.details', $c->user_id) }}" class="btn btn-ghost btn-xs"><i class="fas fa-folder-open"></i> Profile</a></td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -13,15 +13,14 @@
 @endsection
 
 @section('admin-content')
-    <div class="flex items-center justify-between mb-5">
-        <div>
-            <h1 class="text-lg font-bold text-gray-900">All Books</h1>
-            <p class="text-sm text-gray-500 mt-0.5">{{ $books->total() }} book(s) in catalog</p>
-        </div>
-        <button onclick="openBookModal()" class="btn btn-primary"><i class="fas fa-plus"></i> Add Book</button>
-    </div>
-
     <div class="bg-gradient-to-br from-purple-50 to-white rounded-2xl border border-purple-100 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-purple-100 flex items-center justify-between">
+            <div>
+                <h3 class="font-semibold text-gray-900 text-sm">All Books</h3>
+                <p class="text-xs text-gray-400 mt-0.5">{{ $books->total() }} book(s) in catalog</p>
+            </div>
+            <button onclick="openBookModal()" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Add Book</button>
+        </div>
         @if ($books->isEmpty())
             <div class="text-center py-16 text-gray-400"><i class="fas fa-book-open text-4xl mb-4"></i><p class="text-sm">No books yet.</p></div>
         @else
@@ -62,9 +61,9 @@
     <!-- Book Modal (Add / Edit) -->
     <div id="bookModal" class="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-60 flex items-center justify-center p-6 hidden">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform transition-all duration-300">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50">
-                <h3 id="bookModalTitle" class="font-bold text-lg text-gray-900">Add Book</h3>
-                <button onclick="closeBookModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <h3 id="bookModalTitle" class="font-semibold text-gray-900">Add Book</h3>
+                <button onclick="closeBookModal()" class="text-gray-400 hover:text-gray-600 transition">
                     <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
@@ -124,8 +123,8 @@
                     </label>
                 </div>
                 <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                    <button type="button" onclick="closeBookModal()" class="btn btn-outline">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Book</button>
+                    <button type="button" onclick="closeBookModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-5 py-2.5 rounded-lg font-medium text-sm transition">Cancel</button>
+                    <button type="submit" class="bg-primary hover:bg-[#6a1b9a] text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition shadow-md">Save Book</button>
                 </div>
             </form>
         </div>

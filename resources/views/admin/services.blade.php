@@ -13,15 +13,14 @@
 @endsection
 
 @section('admin-content')
-    <div class="flex items-center justify-between mb-5">
-        <div>
-            <h1 class="text-lg font-bold text-gray-900">Consultation Services</h1>
-            <p class="text-sm text-gray-500 mt-0.5">Configure services, durations, and pricing</p>
-        </div>
-        <button onclick="openServiceModal()" class="btn btn-primary"><i class="fas fa-plus"></i> Add Service</button>
-    </div>
-
     <div class="bg-gradient-to-br from-purple-50 to-white rounded-2xl border border-purple-100 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-purple-100 flex items-center justify-between">
+            <div>
+                <h3 class="font-semibold text-gray-900 text-sm">Consultation Services</h3>
+                <p class="text-xs text-gray-400 mt-0.5">Configure services, durations, and pricing</p>
+            </div>
+            <button onclick="openServiceModal()" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Add Service</button>
+        </div>
         @if($services->isEmpty())
             <div class="text-center py-16 text-gray-400"><i class="fas fa-concierge-bell text-4xl mb-4"></i><p class="text-sm">No services configured.</p></div>
         @else
@@ -53,11 +52,11 @@
         @endif
     </div>
 
-    <div id="serviceModal" class="fixed inset-0 z-50 modal-overlay flex items-center justify-center p-6 hidden">
-        <div class="bg-white modal-content w-full max-w-lg">
-            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+    <div id="serviceModal" class="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-60 flex items-center justify-center p-6 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transition-all duration-300">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                 <h3 id="serviceModalTitle" class="font-semibold text-gray-900">Add Service</h3>
-                <button onclick="closeServiceModal()" class="btn btn-ghost btn-icon"><i class="fas fa-times"></i></button>
+                <button onclick="closeServiceModal()" class="text-gray-400 hover:text-gray-600 transition"><i class="fas fa-times text-lg"></i></button>
             </div>
             <form id="serviceForm" method="POST" class="p-6 space-y-5">@csrf <div id="serviceMethodContainer"></div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -72,8 +71,8 @@
                 <div><label class="input-label">Description</label><textarea id="s_description" name="description" rows="3" class="input"></textarea></div>
                 <div class="flex items-center gap-2"><input type="checkbox" id="s_active" name="is_active" value="1" checked class="rounded border-gray-300" style="color: #842988;"><label for="s_active" class="text-sm text-gray-600">Active</label></div>
                 <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                    <button type="button" onclick="closeServiceModal()" class="btn btn-outline">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" onclick="closeServiceModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-5 py-2.5 rounded-lg font-medium text-sm transition">Cancel</button>
+                    <button type="submit" class="bg-primary hover:bg-[#6a1b9a] text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition shadow-md">Save</button>
                 </div>
             </form>
         </div>

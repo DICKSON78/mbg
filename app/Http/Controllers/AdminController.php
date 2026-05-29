@@ -37,12 +37,12 @@ class AdminController extends Controller
             'pending_orders'        => \App\Models\Order::where('status', 'pending')->count(),
         ];
 
-        $recentAppointments = Appointment::orderBy('created_at', 'desc')->take(5)->get();
+        $recentAppointments = Appointment::orderBy('created_at', 'desc')->take(3)->get();
         $upcomingSessions = Appointment::where('status', 'approved')
             ->where('appointment_date', '>=', now()->toDateString())
             ->orderBy('appointment_date', 'asc')
             ->orderBy('appointment_time', 'asc')
-            ->take(5)
+            ->take(3)
             ->get();
 
         return view('admin.dashboard', compact('stats', 'recentAppointments', 'upcomingSessions'));
@@ -196,10 +196,11 @@ class AdminController extends Controller
     public function clients(Request $request)
     {
         // Get unique clients by email, and aggregate their total appointments and latest appointment details
-        $clients = Appointment::select('email', 'name', 'phone')
-            ->selectRaw('count(id) as total_appointments')
-            ->selectRaw('max(appointment_date) as last_appointment_date')
-            ->groupBy('email', 'name', 'phone')
+        $clients = Appointment::select('appointments.email', 'appointments.name', 'appointments.phone', 'users.id as user_id')
+            ->selectRaw('count(appointments.id) as total_appointments')
+            ->selectRaw('max(appointments.appointment_date) as last_appointment_date')
+            ->leftJoin('users', 'users.email', '=', 'appointments.email')
+            ->groupBy('appointments.email', 'appointments.name', 'appointments.phone', 'users.id')
             ->orderBy('last_appointment_date', 'desc')
             ->paginate(15);
 
@@ -209,8 +210,10 @@ class AdminController extends Controller
     /**
      * View history details of a specific client by email.
      */
-    public function clientDetails($email)
+    public function clientDetails(\App\Models\User $user)
     {
+        $email = $user->email;
+
         $clientInfo = Appointment::where('email', $email)->first();
         if (!$clientInfo) {
             abort(404);

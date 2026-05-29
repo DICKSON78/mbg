@@ -116,7 +116,7 @@
 .av-p { background: #33b679; }
 
 /* Modal */
-.modal-overlay { background: rgba(0,0,0,0.3); backdrop-filter: blur(2px); }
+.modal-overlay { background: rgba(0,0,0,0.5); }
 .modal-content { border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.12); }
 
 /* Section title */
@@ -153,7 +153,10 @@
                             <i class="fas fa-book"></i> Books
                         </a>
                         <a href="{{ route('admin.orders') }}" class="side-link {{ request()->routeIs('admin.order*') || request()->routeIs('admin.orders*') ? 'active' : '' }}">
-                            <i class="fas fa-shopping-bag"></i> Orders
+                            <i class="fas fa-shopping-bag"></i> Pre-orders
+                        </a>
+                        <a href="{{ route('admin.posts') }}" class="side-link {{ request()->routeIs('admin.post*') || request()->routeIs('admin.posts*') ? 'active' : '' }}">
+                            <i class="fas fa-newspaper"></i> Posts
                         </a>
                         <div class="side-section-title">Configuration</div>
                         <a href="{{ route('admin.services') }}" class="side-link {{ request()->routeIs('admin.service*') || request()->routeIs('admin.services*') ? 'active' : '' }}">
@@ -170,11 +173,6 @@
 
                 <!-- Content -->
                 <div class="flex-1 min-w-0">
-                    @if(session('success'))
-                        <div class="mb-5 px-4 py-3 bg-green-50 border border-green-200 text-green-700 rounded-lg text-sm flex items-center gap-2">
-                            <i class="fas fa-check-circle text-green-500 text-xs"></i> {{ session('success') }}
-                        </div>
-                    @endif
                     @if(session('error'))
                         <div class="mb-5 px-4 py-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm flex items-center gap-2">
                             <i class="fas fa-exclamation-circle text-red-500 text-xs"></i> {{ session('error') }}

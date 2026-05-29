@@ -5,7 +5,6 @@
 @section('hero')
     <section class="pt-28 pb-10 relative overflow-hidden" style="background: linear-gradient(135deg, #842988 0%, #6a1b9a 100%);">
         <div class="max-w-[1440px] mx-auto px-6 relative z-10">
-            <a href="{{ route('admin.clients') }}" class="text-xs text-yellow-300 hover:text-yellow-200 font-semibold inline-flex items-center gap-1 mb-2"><i class="fas fa-arrow-left"></i> Back to Clients</a>
             <h1 class="text-3xl font-bold text-white mt-1">Client Profile</h1>
             <p class="text-white/70 text-sm mt-1">Consultation history and notes.</p>
         </div>
@@ -13,6 +12,7 @@
 @endsection
 
 @section('admin-content')
+    <a href="{{ route('admin.clients') }}" class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-primary transition mb-5"><i class="fas fa-arrow-left text-xs"></i> Back to Clients</a>
     <div class="bg-gradient-to-br from-purple-50 to-white rounded-2xl border border-purple-100 shadow-sm p-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0" style="background: var(--primary);">{{ strtoupper(substr($clientInfo->name, 0, 1)) }}</div>
@@ -72,8 +72,19 @@
                             @endif
                             <div><p class="font-semibold text-gray-900 text-sm">{{ $p->book->title }}</p><p class="text-xs text-gray-400">By {{ $p->book->author }}</p><p class="text-xs font-semibold mt-0.5" style="color: var(--primary);">{{ $p->currency }} {{ number_format($p->price, 2) }}</p></div>
                         </div>
-                        <div class="text-[10px] text-gray-400 border-t border-gray-200 pt-1.5 space-y-0.5"><div>Method: <span class="font-semibold text-gray-600 uppercase">{{ str_replace('_', ' ', $p->payment_method) }}</span></div><div>Date: <span class="font-semibold text-gray-600">{{ $p->created_at->format('M d, Y') }}</span></div></div>
-                        <form method="POST" action="{{ route('admin.purchase.update', $p) }}" class="border-t border-gray-200 pt-1.5">@csrf @method('PUT')
+                        <div class="text-[10px] text-gray-400 border-t border-gray-200 pt-1.5 space-y-0.5">
+                            <div>Buyer: <span class="font-semibold text-gray-600">{{ $p->buyer_name }}</span></div>
+                            <div>Contact: <span class="font-semibold text-gray-600">{{ $p->buyer_email }} / {{ $p->buyer_phone }}</span></div>
+                            @if ($p->buyer_address)
+                                <div>Address: <span class="font-semibold text-gray-600">{{ $p->buyer_address }}</span></div>
+                            @endif
+                            @if ($p->buyer_notes)
+                                <div>Notes: <span class="font-semibold text-gray-600">{{ $p->buyer_notes }}</span></div>
+                            @endif
+                            <div>Method: <span class="font-semibold text-gray-600 uppercase">{{ str_replace('_', ' ', $p->payment_method) }}</span></div>
+                            <div>Date: <span class="font-semibold text-gray-600">{{ $p->created_at->format('M d, Y') }}</span></div>
+                        </div>
+                        <form method="POST" action="{{ route('admin.order.update', $p) }}" class="border-t border-gray-200 pt-1.5">@csrf @method('PUT')
                             <div class="flex gap-2">
                                 <select name="status" class="input text-[10px] px-1.5 py-1">
                                     <option value="pending" {{ $p->status === 'pending' ? 'selected' : '' }}>Pending</option>

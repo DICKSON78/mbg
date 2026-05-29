@@ -57,12 +57,20 @@
                                 </span>
                             </div>
                             <div class="mt-3 flex items-center gap-2">
-                                @if($p->book->isDigital() && $p->book->file_path)
-                                    <a href="{{ route('order.download', $p->id) }}" class="text-xs font-semibold text-green-600 hover:text-green-800 bg-green-50 px-3 py-1.5 rounded-full transition inline-flex items-center gap-1">
-                                        <i class="fas fa-download"></i> Download
-                                    </a>
+                                @if($p->status === 'completed')
+                                    <span class="text-xs font-semibold text-green-600 bg-green-50 px-3 py-1.5 rounded-full inline-flex items-center gap-1">
+                                        <i class="fas fa-check-circle"></i> Delivered
+                                    </span>
+                                @elseif($p->status === 'pending')
+                                    <span class="text-xs font-semibold text-amber-600 bg-amber-50 px-3 py-1.5 rounded-full inline-flex items-center gap-1">
+                                        <i class="fas fa-clock"></i> Processing
+                                    </span>
+                                @else
+                                    <span class="text-xs font-semibold text-red-600 bg-red-50 px-3 py-1.5 rounded-full inline-flex items-center gap-1">
+                                        <i class="fas fa-times-circle"></i> Cancelled
+                                    </span>
                                 @endif
-                                <span class="text-[10px] text-gray-400">Paid via {{ str_replace('_', ' ', $p->payment_method) }}</span>
+                                <span class="text-[10px] text-gray-400">Manual Payment</span>
                             </div>
                         </div>
                     </div>

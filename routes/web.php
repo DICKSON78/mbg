@@ -9,7 +9,8 @@ use App\Http\Controllers\AdminController;
 
 // Public Static Routes
 Route::get('/', function () {
-    return view('home');
+    $latestBook = \App\Models\Book::where('status', 'active')->latest()->first();
+    return view('home', compact('latestBook'));
 })->name('home');
 
 Route::get('/about', function () {
@@ -27,6 +28,10 @@ Route::get('/testimonials', function () {
 // Dynamic Public Bookstore Routes
 Route::get('/books', [ClientBookController::class, 'index'])->name('books');
 Route::post('/books/{book}/purchase', [ClientBookController::class, 'purchase'])->name('book.purchase');
+
+// Blog Routes
+Route::get('/blog', [App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 
 // Contact Form Submission
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
@@ -95,12 +100,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::put('/books/{book}', [AdminController::class, 'updateBook'])->name('admin.book.update');
     Route::delete('/books/{book}/delete', [AdminController::class, 'deleteBook'])->name('admin.book.delete');
     
-    // Manage Orders
+    // Manage Pre-orders (Book Purchases)
     Route::get('/orders', [App\Http\Controllers\AdminOrderController::class, 'index'])->name('admin.orders');
-    Route::get('/orders/{order}', [App\Http\Controllers\AdminOrderController::class, 'show'])->name('admin.order.show');
-    Route::put('/orders/{order}', [App\Http\Controllers\AdminOrderController::class, 'updateStatus'])->name('admin.order.update');
-    Route::put('/orders/{order}/payment', [App\Http\Controllers\AdminOrderController::class, 'updatePayment'])->name('admin.order.payment');
-    Route::get('/orders/{order}/invoice', [App\Http\Controllers\AdminOrderController::class, 'invoice'])->name('admin.order.invoice');
+    Route::get('/orders/{purchase}', [App\Http\Controllers\AdminOrderController::class, 'show'])->name('admin.order.show');
+    Route::put('/orders/{purchase}', [App\Http\Controllers\AdminOrderController::class, 'updateStatus'])->name('admin.order.update');
+    Route::delete('/orders/{purchase}/delete', [App\Http\Controllers\AdminOrderController::class, 'destroy'])->name('admin.order.destroy');
 
     // Manage Services & Time Slots
     Route::get('/services', [App\Http\Controllers\AdminServiceController::class, 'index'])->name('admin.services');
@@ -113,10 +117,15 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::put('/time-slots/{timeSlot}', [App\Http\Controllers\AdminTimeSlotController::class, 'update'])->name('admin.time-slot.update');
     Route::delete('/time-slots/{timeSlot}/delete', [App\Http\Controllers\AdminTimeSlotController::class, 'destroy'])->name('admin.time-slot.delete');
 
+    // Manage Blog Posts
+    Route::get('/posts', [App\Http\Controllers\AdminPostController::class, 'index'])->name('admin.posts');
+    Route::post('/posts/store', [App\Http\Controllers\AdminPostController::class, 'store'])->name('admin.posts.store');
+    Route::put('/posts/{post}', [App\Http\Controllers\AdminPostController::class, 'update'])->name('admin.posts.update');
+    Route::delete('/posts/{post}/delete', [App\Http\Controllers\AdminPostController::class, 'destroy'])->name('admin.posts.delete');
+
     // Manage Consultation Client Directory
     Route::get('/clients', [AdminController::class, 'clients'])->name('admin.clients');
-    Route::get('/clients/{email}', [AdminController::class, 'clientDetails'])->name('admin.client.details');
-    Route::put('/purchases/{purchase}', [AdminController::class, 'updatePurchaseStatus'])->name('admin.purchase.update');
+    Route::get('/clients/{user}', [AdminController::class, 'clientDetails'])->name('admin.client.details');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 });
 

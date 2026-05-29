@@ -54,16 +54,16 @@
         </div>
     </section>
 
-    <!-- Book Section -->
+    @if ($latestBook)
     <section class="py-20 bg-white">
         <div class="container mx-auto px-6">
             <div class="flex flex-col lg:flex-row items-center">
                 <div class="lg:w-2/5 mb-12 lg:mb-0 lg:pr-12">
                     <div class="relative">
-                        <img src="{{ asset('assets/img/book.jpeg') }}" alt="My Identity: Becoming Who I Say I Am" class="rounded-2xl shadow-2xl w-full max-w-md mx-auto hover:scale-105 transition-transform duration-500">
+                        <img src="{{ asset($latestBook->cover_image ?? 'assets/img/book.jpeg') }}" alt="{{ $latestBook->title }}" class="rounded-2xl shadow-2xl w-full max-w-md mx-auto hover:scale-105 transition-transform duration-500">
                         <div class="absolute -bottom-6 -right-6 bg-primary text-white p-4 rounded-2xl shadow-lg w-3/4">
                             <div class="text-center">
-                                <h4 class="font-bold text-lg">Available Now</h4>
+                                <h4 class="font-bold text-lg">{{ $latestBook->status == 'active' ? 'Available Now' : 'Coming Soon' }}</h4>
                                 <p class="text-sm opacity-90">Get Your Copy Today</p>
                             </div>
                         </div>
@@ -72,18 +72,12 @@
                 
                 <div class="lg:w-3/5">
                     <span class="text-primary font-semibold">NEW BOOK RELEASE</span>
-                    <h2 class="text-4xl font-bold text-dark mb-6 mt-2">My Identity: <span class="text-primary">Becoming Who I Say I Am</span></h2>
-                    <p class="text-xl text-gray-700 mb-6 italic">"What would happen if you stopped letting the world define you and started defining yourself?"</p>
-                    
+                    <h2 class="text-4xl font-bold text-dark mb-6 mt-2">{{ $latestBook->title }}</h2>
+                    @if ($latestBook->description)
                     <div class="bg-gray-50 p-6 rounded-2xl mb-8 border-l-4 border-secondary">
-                        <p class="text-lg text-gray-700 leading-relaxed">
-                            In <span class="font-semibold text-primary">My Identity: Becoming Who I Say I Am</span>, Dr. Susan O. Bamidele weaves psychology, storytelling, and faith into a transformative guide on self-worth, healing, and inner peace. Through the journey of Akello, a woman who learns to peel away false labels and embrace her true identity, this book explores the power of words, the science of self-talk, and the beauty of becoming who you were always meant to be.
-                        </p>
+                        <p class="text-lg text-gray-700 leading-relaxed">{{ $latestBook->description }}</p>
                     </div>
-                    
-                    <p class="text-lg text-gray-700 mb-8 font-medium">
-                        It's not just a story. It's an invitation, to speak life, rewrite your narrative, and find serenity in your identity.
-                    </p>
+                    @endif
                     
                     <div class="flex flex-wrap gap-4">
                         <a href="{{ route('books') }}" class="bg-primary hover:bg-opacity-90 text-white px-8 py-3 rounded-full font-semibold transition-all shadow-lg hover:shadow-xl hover-scale flex items-center">
@@ -97,6 +91,7 @@
             </div>
         </div>
     </section>
+    @endif
 
     <!-- About Preview -->
     <section class="py-20 bg-gray-50">

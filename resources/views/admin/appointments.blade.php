@@ -13,22 +13,18 @@
 @endsection
 
 @section('admin-content')
-    <div class="flex items-center justify-between mb-5">
-        <div>
-            <h1 class="text-lg font-bold text-gray-900">All Appointments</h1>
-            <p class="text-sm text-gray-500 mt-0.5">Filter by status below</p>
-        </div>
-    </div>
-
-    <div class="flex flex-wrap gap-2 mb-5">
-        <a href="{{ route('admin.appointments') }}" class="filter-tab {{ !$status ? 'active' : '' }}">All</a>
-        <a href="{{ route('admin.appointments', ['status' => 'pending']) }}" class="filter-tab {{ $status == 'pending' ? 'active' : '' }}">Pending</a>
-        <a href="{{ route('admin.appointments', ['status' => 'approved']) }}" class="filter-tab {{ $status == 'approved' ? 'active' : '' }}">Approved</a>
-        <a href="{{ route('admin.appointments', ['status' => 'completed']) }}" class="filter-tab {{ $status == 'completed' ? 'active' : '' }}">Completed</a>
-        <a href="{{ route('admin.appointments', ['status' => 'declined']) }}" class="filter-tab {{ $status == 'declined' ? 'active' : '' }}">Declined</a>
-    </div>
-
     <div class="bg-gradient-to-br from-purple-50 to-white rounded-2xl border border-purple-100 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-purple-100">
+            <h3 class="font-semibold text-gray-900 text-sm">All Appointments</h3>
+            <p class="text-xs text-gray-400 mt-0.5">Filter by status below</p>
+        </div>
+        <div class="flex flex-wrap gap-2 px-5 py-3 border-b border-purple-100/50">
+            <a href="{{ route('admin.appointments') }}" class="filter-tab {{ !$status ? 'active' : '' }}">All</a>
+            <a href="{{ route('admin.appointments', ['status' => 'pending']) }}" class="filter-tab {{ $status == 'pending' ? 'active' : '' }}">Pending</a>
+            <a href="{{ route('admin.appointments', ['status' => 'approved']) }}" class="filter-tab {{ $status == 'approved' ? 'active' : '' }}">Approved</a>
+            <a href="{{ route('admin.appointments', ['status' => 'completed']) }}" class="filter-tab {{ $status == 'completed' ? 'active' : '' }}">Completed</a>
+            <a href="{{ route('admin.appointments', ['status' => 'declined']) }}" class="filter-tab {{ $status == 'declined' ? 'active' : '' }}">Declined</a>
+        </div>
         @if ($appointments->isEmpty())
             <div class="text-center py-16 text-gray-400"><i class="fas fa-calendar-times text-4xl mb-4"></i><p class="text-sm">No appointments found.</p></div>
         @else
@@ -63,11 +59,11 @@
         @endif
     </div>
 
-    <div id="editModal" class="fixed inset-0 z-50 modal-overlay flex items-center justify-center p-6 hidden">
-        <div class="bg-white modal-content w-full max-w-lg">
-            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+    <div id="editModal" class="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-60 flex items-center justify-center p-6 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transition-all duration-300">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                 <h3 class="font-semibold text-gray-900">Update Appointment</h3>
-                <button onclick="closeEditModal()" class="btn btn-ghost btn-icon"><i class="fas fa-times"></i></button>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600 transition"><i class="fas fa-times text-lg"></i></button>
             </div>
             <form id="editForm" method="POST" class="p-6 space-y-5">@csrf @method('PUT')
                 <div class="grid grid-cols-2 gap-4">
@@ -79,8 +75,8 @@
                 </select></div>
                 <div><label class="input-label">Notes</label><textarea id="modal_notes" name="notes" rows="3" class="input" placeholder="Session notes..."></textarea></div>
                 <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                    <button type="button" onclick="closeEditModal()" class="btn btn-outline">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" onclick="closeEditModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-5 py-2.5 rounded-lg font-medium text-sm transition">Cancel</button>
+                    <button type="submit" class="bg-primary hover:bg-[#6a1b9a] text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition shadow-md">Save Changes</button>
                 </div>
             </form>
         </div>

@@ -13,15 +13,14 @@
 @endsection
 
 @section('admin-content')
-    <div class="flex items-center justify-between mb-5">
-        <div>
-            <h1 class="text-lg font-bold text-gray-900">Available Time Slots</h1>
-            <p class="text-sm text-gray-500 mt-0.5">Configure when clients can book sessions</p>
-        </div>
-        <button onclick="openSlotModal()" class="btn btn-primary"><i class="fas fa-plus"></i> Add Slot</button>
-    </div>
-
     <div class="bg-gradient-to-br from-purple-50 to-white rounded-2xl border border-purple-100 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-purple-100 flex items-center justify-between">
+            <div>
+                <h3 class="font-semibold text-gray-900 text-sm">Available Time Slots</h3>
+                <p class="text-xs text-gray-400 mt-0.5">Configure when clients can book sessions</p>
+            </div>
+            <button onclick="openSlotModal()" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Add Slot</button>
+        </div>
         @if($timeSlots->isEmpty())
             <div class="text-center py-16 text-gray-400"><i class="fas fa-clock text-4xl mb-4"></i><p class="text-sm">No time slots configured.</p></div>
         @else
@@ -54,11 +53,11 @@
         @endif
     </div>
 
-    <div id="slotModal" class="fixed inset-0 z-50 modal-overlay flex items-center justify-center p-6 hidden">
-        <div class="bg-white modal-content w-full max-w-md">
-            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+    <div id="slotModal" class="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-60 flex items-center justify-center p-6 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transition-all duration-300">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                 <h3 id="slotModalTitle" class="font-semibold text-gray-900">Add Time Slot</h3>
-                <button onclick="closeSlotModal()" class="btn btn-ghost btn-icon"><i class="fas fa-times"></i></button>
+                <button onclick="closeSlotModal()" class="text-gray-400 hover:text-gray-600 transition"><i class="fas fa-times text-lg"></i></button>
             </div>
             <form id="slotForm" method="POST" class="p-6 space-y-5">@csrf <div id="slotMethodContainer"></div>
                 <div><label class="input-label">Label</label><input type="text" id="sl_label" name="label" class="input" placeholder="e.g. Morning Slot 1"></div>
@@ -73,8 +72,8 @@
                 </div>
                 <div class="flex items-center gap-2"><input type="checkbox" id="sl_active" name="is_active" value="1" checked class="rounded border-gray-300" style="color: #842988;"><label for="sl_active" class="text-sm text-gray-600">Active</label></div>
                 <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                    <button type="button" onclick="closeSlotModal()" class="btn btn-outline">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" onclick="closeSlotModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-5 py-2.5 rounded-lg font-medium text-sm transition">Cancel</button>
+                    <button type="submit" class="bg-primary hover:bg-[#6a1b9a] text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition shadow-md">Save</button>
                 </div>
             </form>
         </div>
